@@ -14,6 +14,10 @@ class FlightViewModel: ObservableObject {
         print("Flight vm created")
     }
     
+    func reset() {
+        flights?.removeAll()
+    }
+    
     func loadFirst() {
         DispatchQueue.global().async {
             FlightData.loadFew { flights in
@@ -54,7 +58,7 @@ struct FlightRow: View {
             Spacer()
             if let index = index {
                 Text("\(index)")
-                    .padding()
+                    .font(.system(.caption))
                 Spacer()
             }
             Text(flight.from)
@@ -101,18 +105,21 @@ struct FlightList: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button {
                         viewType = .list
+                        flightsViewModel.reset()
                     } label: {
                         Image(systemName: "l.circle")
                     }
 
                     Button {
                         viewType = .scrollStack
+                        flightsViewModel.reset()
                     } label: {
                         Image(systemName: "s.circle")
                     }
                     
                     Button {
                         viewType = .uiTableView
+                        flightsViewModel.reset()
                     } label: {
                         Image(systemName: "t.circle")
                     }
@@ -166,13 +173,11 @@ struct FlightList: View {
                 flightsViewModel.loadFirst()
             }
             
-            Button("Scroll More") {
+            Button("Scroll to end") {
                 didRequestScroll = true
             }
-            .background(.white)
-            .padding()
-            .padding()
-            
+            .buttonStyle(BlueButton())
+
         }
     }
     
@@ -204,12 +209,10 @@ struct FlightList: View {
                 }
             }
             
-            Button("Scroll More") {
+            Button("Scroll to end") {
                 didRequestScroll = true
             }
-            .background(.white)
-            .padding()
-            .padding()
+            .buttonStyle(BlueButton())
         }
     }
     
@@ -235,13 +238,10 @@ struct FlightList: View {
                 flightsViewModel.loadFirst()
             }
             
-            Button("Scroll More") {
+            Button("Scroll to end") {
                 didRequestScroll = true
             }
-            .background(.white)
-            .padding()
-            .padding()
-
+            .buttonStyle(BlueButton())
         }
     }
     
@@ -261,5 +261,17 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+struct BlueButton: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.system(.caption))
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .clipShape(Capsule())
+            .padding()
     }
 }

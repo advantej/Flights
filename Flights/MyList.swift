@@ -41,11 +41,10 @@ struct MyList<Data, Row: View>: UIViewRepresentable {
         context.coordinator.data = data
         
         if scrollToEndRequested {
-            /* WIP: going out of bounds
             let row = self.data.count - 1
             let indexPath = IndexPath(row: row, section: 0)
             uiView.scrollToRow(at: indexPath, at: .top, animated: true)
-             */
+            scrollToEndRequested = false
         } else {
             uiView.reloadData()
         }

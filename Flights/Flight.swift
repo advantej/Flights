@@ -26,7 +26,7 @@ class FlightData {
     
     public static func loadFew(_ completion: @escaping (([Flight]) -> Void)) {
         var flights = [Flight]()
-        for _ in 0..<100000 {
+        for _ in 0..<10000 {
             flights.append(FlightData.randomFlight())
         }
         completion(flights)

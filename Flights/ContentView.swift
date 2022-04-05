@@ -147,9 +147,6 @@ struct FlightList: View {
                     LazyVStack {
                         ForEach(flightsViewModel.flights ?? []) { flight in
                             FlightRow(flight: flight, index: nil)
-                                .onTapGesture {
-                                    deleteRecord(flight: flight)
-                                }
                                 .onAppear {
                                     if let lastFlight = flightsViewModel.flights?.last,
                                        flight.id == lastFlight.id {
@@ -186,9 +183,6 @@ struct FlightList: View {
             ScrollViewReader { value in
                 List(flightsViewModel.flights ?? []) { flight in
                     FlightRow(flight: flight, index: nil)
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button("Delete") { deleteRecord(flight: flight) }
-                        }
                         .onAppear {
                             if let lastFlight = flightsViewModel.flights?.last,
                                flight.id == lastFlight.id {
@@ -244,12 +238,6 @@ struct FlightList: View {
             .buttonStyle(BlueButton())
         }
     }
-    
-    private func deleteRecord(flight: Flight) {
-        withAnimation {
-            flightsViewModel.delete(flight: flight)
-        }
-    }
 }
 
 struct ContentView: View {
@@ -273,5 +261,6 @@ struct BlueButton: ButtonStyle {
             .foregroundColor(.white)
             .clipShape(Capsule())
             .padding()
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
     }
 }
